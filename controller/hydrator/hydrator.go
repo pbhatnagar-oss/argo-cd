@@ -370,7 +370,7 @@ logCtx = logCtx.WithFields(log.Fields{"drySha": targetRevision})
 	// De-dupe, if the drySha was already hydrated log a debug and return using the data from the last successful hydration run.
 	// We only inspect one app. If apps have been added/removed, that will be handled on the next DRY commit.
 	if apps[0].Status.SourceHydrator.LastSuccessfulOperation != nil && targetRevision == apps[0].Status.SourceHydrator.LastSuccessfulOperation.DrySHA {
-		logCtx.Debugf("this dry sha %s is already hydrated", targetRevision)
+		logCtx.Debug("Skipping hydration since the DRY commit was already hydrated")
 		return targetRevision, apps[0].Status.SourceHydrator.LastSuccessfulOperation.HydratedSHA, nil, nil
 	}
 
