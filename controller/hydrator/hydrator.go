@@ -367,7 +367,8 @@ func (h *Hydrator) hydrate(logCtx *log.Entry, apps []*appv1.Application, project
 	}
 	paths := []*commitclient.PathDetails{pathDetails}
 
-	// de-dupe, if the drySha was already hydrated log a debug and return using the data from the last successful hydration run
+	// De-dupe, if the drySha was already hydrated log a debug and return using the data from the last successful hydration run.
+	// We only inspect one app. If apps have been added/removed, that will be handled on the next DRY commit.
 	if apps[0].Status.SourceHydrator.LastSuccessfulOperation != nil && targetRevision == apps[0].Status.SourceHydrator.LastSuccessfulOperation.DrySHA {
 		logCtx.Debugf("this dry sha %s is already hydrated", targetRevision)
 		return targetRevision, apps[0].Status.SourceHydrator.LastSuccessfulOperation.HydratedSHA, nil, nil
