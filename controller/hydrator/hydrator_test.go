@@ -1115,6 +1115,8 @@ func TestHydrator_hydrate_DeDupe_Success(t *testing.T) {
 	proj := newTestProject()
 	projects := map[string]*v1alpha1.AppProject{app1.Spec.Project: proj}
 
+	// Asserting .Once() confirms that we only make one call to repo-server to get the last hydrated DRY
+	// sha, and then we quit early.
 	d.On("GetRepoObjs", mock.Anything, app1, app1.Spec.SourceHydrator.GetDrySource(), "main", proj).Return(nil, &repoclient.ManifestResponse{Revision: "sha123"}, nil).Once()
 	logCtx := log.NewEntry(log.StandardLogger())
 
